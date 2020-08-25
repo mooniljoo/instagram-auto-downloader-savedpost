@@ -9,6 +9,8 @@ username = input("스크래핑 할 인스타그램 계정의 아이디를 입력
 password = input("비밀번호를 입력하세요\n→ ")
 dir_name1 = input("다운받은 파일을 저장할 폴더명을 입력하세요\n→ ")
 dir_name = dir_name1+'/'
+# username = 'fromchama'
+# password = '7890987'
 # dir_name = 'downloaded/'
 driver = webdriver.Chrome(r'.\chromedriver_win32\chromedriver.exe')
 url1 = 'https://www.instagram.com/accounts/login/?next=%2F'
@@ -63,7 +65,7 @@ try:
     # 접속
     print('브라우저 열기 시도')
     driver.get(url)
-    driver.implicitly_wait(1)
+    driver.implicitly_wait(3)
     print('브라우저 접속 완료')
 
     # 로그인
@@ -71,8 +73,11 @@ try:
     driver.find_element_by_name('username').send_keys(username)
     driver.find_element_by_name('password').send_keys(password)
     driver.find_element_by_xpath(
-        '//*[@id="react-root"]/section/main/div/article/div/div[1]/div/form/div[4]/button').click()
+        '//*[@id="loginForm"]/div/div[3]/button').click()
     print('로그인 접속 시도')
+    not_rem_acc = driver.find_element_by_xpath('//*[@id="react-root"]/section/main/div/div/div/div/button')
+    if not_rem_acc:
+        not_rem_acc.click()
     driver.implicitly_wait(5)
 
     # 자동 스크롤
@@ -114,8 +119,7 @@ try:
         thum_next = driver.find_elements_by_css_selector('._6CZji')
         container = driver.find_element_by_css_selector('._97aPb.wKWK0')
         ArrLi = container.find_elements_by_css_selector('._-1_m6')
-        username = driver.find_element_by_css_selector(
-            '.FPmhX.notranslate.nJAzx').get_attribute('title')
+        username = driver.find_element_by_css_selector('a.sqdOP.yWX7d._8A5w5.ZIAjV').text
 
         id_ = href.split('/p/')[1].split('/')[0]
 
@@ -148,7 +152,7 @@ try:
         # 저장해제
         btn_like = driver.find_element_by_css_selector('.fr66n')
         btn_save = driver.find_element_by_css_selector('.wmtNn')
-        # btn_save.click()
+        btn_save.click()
 
 except Exception as e:
     print(e)
